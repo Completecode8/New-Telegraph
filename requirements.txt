@@ -1,0 +1,11 @@
+python-telegram-bot==20.0 # Use v20+ as specified
+selenium==4.8.0 # Specified version
+google-api-python-client==2.79.0 # Specified version
+google-auth-httplib2
+google-auth-oauthlib
+requests
+sqlite3 # Built-in, but good to list for clarity
+schedule
+pywin32 # For Windows sleep prevention
+requests==2.32.3
+beautifulsoup4==4.12.3

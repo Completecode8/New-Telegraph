@@ -1,0 +1,16 @@
+{
+  "telegram_bot_token": "YOUR_TELEGRAM_BOT_TOKEN",
+  "shrinkme_api_key": "YOUR_SHRINKME_API_KEY",
+  "recommended_channels": [
+    "https://t.me/Channel1",
+    "https://t.me/Channel2",
+    "https://t.me/Channel3"
+  ],
+  "initial_admin_ids": [
+    123456789,
+    987654321
+  ],
+  "chrome_profile_path": "C:\\Users\\<User>\\AppData\\Local\\Google\\Chrome\\User Data\\BotProfile",
+  "download_directory": "C:\\BotDownloads",
+  "google_drive_folder_id": "YOUR_GOOGLE_DRIVE_FOLDER_ID"
+}

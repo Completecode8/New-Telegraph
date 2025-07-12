@@ -1,0 +1,22 @@
+{
+  "allowed_domains": [
+    "freepik.com",
+    "envatoelements.com",
+    "vecteezy.com",
+    "pngtree.com",
+    "motionarray.com",
+    "pikbest.com",
+    "storyblocks.com",
+    "iconscout.com"
+  ],
+  "rewrite_map": {
+    "freepik.com": "freepik-download.com",
+    "envatoelements.com": "envato-download.com",
+    "vecteezy.com": "vecteezy-download.com",
+    "pngtree.com": "pngtree-download.com",
+    "motionarray.com": "motion-download.com",
+    "pikbest.com": "pikbest-download.com",
+    "storyblocks.com": "storyblocks-download.com",
+    "iconscout.com": "iconscout-download.com"
+  }
+}

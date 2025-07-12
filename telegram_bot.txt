@@ -1,0 +1,1227 @@
+
+let's build a more strong and professional telegram bot,  add 8 websites ( freepik, envato elements, vecteezy, pngtree, motion array, pikbest, storyblocks, iconscout ) from where telegram bot will download the file and distribute in telegram groups ( to that group member/user who requested that file through a link ), bot should handle multiple groups Simultaneously and accept requests from multiple groups simultaneously, To send any kind of message/request in the group, Normal users have to first join the recommended three channels and a Normal user cannot send any message/request until they joins the recommended channels If a Normal user tries to send a message/request without joining the recommended channel, his message/request will be deleted immediately ( And bot  will not accept his request )And the bot will send the links of the recommended channels with a message to (join them first). I mean there are three  recommended channels which a normal user has to join to avail the bot services. There should be a system in which the Telegram bot first checks whether the user has joined the recommended channel or not, if not, the Telegram bot will not accept his request and will delete his message and send him the link of the recommended channels, add website link verification if link is incorrect then ignore the message, add link edit ( in which after receiving the request file  link bot will edit the link domain name with different specific domain ) (each website domain name edit with a different specific domain name i mean there is not only one domain for ever website there are specific domain for every website for edit ), I am going to host this telegram bot in my windows pc, bot should use my PC Chrome browser Specific Profile ( we can install chrome extension in this browser) for download file in pc, Headless Mode Chrome browser  ( this will run in background and we can do our work But whenever we want to open that browser specific profile We should be able to open it like a normal chrome browser),  no need for login website  already login in that browser (if website asks for login On any website Then DM Admin / owner), bot should not use so many tabs in web browser (Maximum three-4 tabs)( We need to manage resources as well), after complete download bot will upload file on google drive through api after complete upload bot will share the direct download link to that group member / user who requested that file as a reply message [but in some cases bot will  convert google drive link into shrinkme link  (shrinkme.io link ) through api ] more than one link in single message bot will ignore that message, if link is not correct / broken bot will ignore the message if user will send link from another website / website is correct but download option is not available on that page bot will ignore that message, add start Command (/bot-start) and stop Command (/stop-bot) in which telegram bot start working (start working in that specific group ) and stop working in that group (stop working in that specific group not in every group) and only admin can use this commands, add authentication We are going to Store group IDs in a config file/database. when Bot is added to any group then bot Should immediately Checks the group id is Allowed or not in ALLOWED GROUP IDS (file/database) if the group id is unauthorized then bot immediately auto-leaves the group and if authorized then bot will not auto-leaves the group and Whenever bot added to a new Unauthorized group bot will immediately auto-leaves that group and send Notification in admin dm with group ID, Add a dynamic group approval system There should be a command name :- /groupapprovae which can only be used by admin in Bot dm This command (/groupapprovae) will approve new groups and add their ID to the approved group list In database There should be a command name :- /allapprovaedgroup which can only be used by admin in Bot dm This command (/allapprovaedgroup) will provide the ID of all approved groups from database There should be a command name :- (/deletethisapprovaedgroup) This command (/deletethisapprovaedgroup) will delete the group id from ALLOWED GROUP IDS (file/database), ensure that no one can use bot dm chats (not for admin, Admin can use bot dm chats )(The bot should ignores all commands/text From normal user in bot dm chats If a Normal user DMs the bot, they get a message [channel link/group link] (want to guide users to the group) Allow admins to use DM commands admin should receive all error messages With details in dm bot will not send critical error messages in groups (If there is any error in task process bot will send only [error found] message in group) instead of sending in groups bot will send  Detailed error message in admin dm 
+
+Let's add some subscriptions there should be five subscriptions In this bot (Basically these subscriptions are the commands for bot And according to that subscription command bot will start Provide the file in that specific group ) 
+ [1 subscription] Name :- default subscription  (Command name :- /defaultsubscription) This subscription is default subscription  if admin doesn't Provide any subscription command in that group after start command then this subscription automatically active in that group In this subscription We are going to limit on file size Maximum file size is 245MB (If requested file is more than 245MB then bot will not proceed that request/ task (bot will not uploaded file on Google Drive) bot will not provide fine instead of providing file bot will send a [message File size is more than 245MB purchase premium / contact to admin] ) In this subscription plan we are Going to use shrinkme.io website through api to convert Google drive share link into shrinkme link (bot will convert google drive share link into shrinme link and after conversion bot will provide shrinme link to the user instead of Google drive share link ) After sharing shrinkme link bot will send a message to that user stating his name or if his name is not available then his user id, the message will be a donation message Example [@abc/user id If you'd like our file share service then please donate ] And In this subscription plan (daily limit of requesting file is one) bot will serve only one file/user in 24 hours  (user cannot send more than one link in one message if this happen ignore the message) and if that same user request Another file before completing 24 hours then show the message [your free limit is exceed wait for 24 hours otherwise you can purchase Pro  contact to admin]. [2 subscription] Name :- 12h subscription (Command name :- /12hsubscription) This subscription only start In that group only when admin/Owner command this ( /12hsubscription ) in that Specific group And when this subscription is activated In the group , all other subscriptions in the group will stop in that Specific group In this subscription We are going to limit on file size Maximum file size is 245MB (If requested file is more than 245MB then bot will not proceed that request / task (bot will not uploaded file on Google Drive) bot will not provide fine instead of providing file bot will send a [message File size is more than 245MB purchase premium / contact to admin] ) In this subscription plan we are Going to use shrinkme.io website through api to convert Google drive share link into shrinkme link (bot will convert google drive share link into shrinme link and after conversion bot will provide shrinme link to the user instead of Google drive share link ) After sharing shrinkme link bot will send a message to that user stating his name or if his name is not available then his user id, the message will be a donation message Example [@abc/user id If you'd like our file share service then please donate ] And In this subscription plan  bot will serve only one file/user in 12 hours  (user cannot send more than one link in one message if this happen ignore the message) and if that same user request Another file before completing 12 hours then show the message [your free limit is exceed wait for 12 hours otherwise you can purchase Pro contact to admin] [3 subscription] Name :- free subscription (Command name :- /freesubscription) This subscription only start In that Specific group only when admin/Owner command this ( /freesubscription ) in that Specific group And when this subscription is activated In the group , all other subscriptions in the group will stop in that Specific group In this subscription plan There is no limit on file size In this subscription plan (daily limit of requesting file is one) bot will serve only one file/user in 24 hours and After sharing Google drive download link bot will send a message to that user stating his name or if his name is not available then his user id, the message will be a donation message Example [@abc/user id If you'd like our file share service then please donate ] and (user cannot send more than one link in one message if this happen ignore the message) and if that same user request Another file before completing 24 hours then show the message [your free limit is exceed wait for 24 hours otherwise you can purchase Pro  (Basically in this subscription we are not going to use shrinkme )
+
+ [4 subscription] Name :- file subscription (Command name :- /filesubscription) This subscription only start In that group only when admin/Owner command this ( /filesubscription ) in that Specific group And when this subscription is activated In the group , all other subscriptions in the group will stop in that Specific group  In this subscription plan There is no limit on file size In this subscription plan bot will serve unlimited files and user cannot send more then 1 links in one message if this happen then ignore the message every message should have 1min time gap( I mean user cannot send another message for 1 min User should get restricted for sending message For one minute ) and after accept requests bot will send Different processing message [ Your request is accepted processing] ( i mean when requests added in queue bot will send Different processing message for /filesubscription subscription ) 
+ [5 subscription] Name :- 1subscription (Command name :- /1subscription) This subscription only start In that group only when admin/Owner command this ( /1subscription ) in that Specific group And when this subscription is activated In the group , all other subscriptions in the group will stop in that Specific group In this subscription plan There is no limit on file size In this subscription plan bot will serve unlimited files no restrictions and after accept requests bot will send Different processing message [ Your request is accepted processing] ( i mean when requests added in queue bot will send Different processing message for /filesubscription subscription ) 
+
+We have to save the subscription details of all the groups. because if bot get crashed then subscription must begin from where it left off in every group  (it should start working from there from where it was stoped in every group ) subscription details can vary from group to group and must begin where it left off in every group that  (The same subscription should start as it was before the crash in every group [it should not happen that the admin has to Command subscription again in every group] ) That's why we need to save the subscription details of every group properly and And if bot get  removed from a group then  subscription details should be deleted only for that specific group , also add /unactivate /activate  Command  in this when admin use unactivate bot will  takeing rest in that specific group and after unactivate commands when admin use activate commands in that specific group bot will start again working in that group from where it left (i mean bot should Completely start ignoring that specific group where unactivate commands applied till admin apply Activate commands) , add commands (/block-website command and /unblock-website command)  in which admin can  easily block and unblock any websites/domains in specific group (immediately bot will delete all new messages that contain the blocked website/domain name) for user/group members (not for admin) (If admin block any website from which Telegram bot provides files, then after the block on that website , Telegram bot will not provide the Requested file from that specific website only in that specific group instead it will provide a message [ This Website is Not available right now contact to admin] ) And with unblock we can easily unblock websites/domain name, Task Queue use task queue Use a database (SQLite would be lightweight) to track requests , add priority queue [There should be two types of Queue Normal Queue (Normal Queue is Normal and when bot completing  Normal Queue Tasks then bot Will check all priority Queue of each group After completing every Normal Queue Request/Tasks and if there is any task/requite in priority Queue then bot should complete that first and if there is no task in priority Queue then bot will back to start working on normal queue from where it left  I mean when bot working on normal Queue list then after completing every task/requite from normal Queue bot  Will check all priority Queue of each group and if there is any task in any priority Queue list then bot should complete all the task form priority Queue first then bot will start working again Normal Queue list) and priority Queue In this Task Queue (bot should give first priority for those task/requite Which are available in priority Queue Even if bot working on  Normal Queue [any normal task queue from any group] list bot should check every priority Queue of each group After completing every Normal Queue Request/Tasks and if there is any task/requite in any priority Queue then bot should complete that first and if there is no task in priority Queue then bot will back to start working on normal queue from where it left )], [subscription Name :- file subscription (Command name :- /filesubscription) and subscription Name :- 1subscription (Command name :- /1subscription), these subscription will use  priority Queue], every group should have there specific Queue Management (this will apply on both queue priority Queue and Normal Queue ) Because if we want to stop bot in specific group / if we want to reset queue for specific group (queue should be reset specifically for that group), add few commands Related to Queue Management There should be a command (reset queue) for reset queue in which when owner/admin will use this command in the specific group the queue list will reset in that specific group Provide a way to manage and monitor pending requests for that specific group in which owner/admin use this command (/manage-this-group-queue) for manage, reset and monitor pending requests of specific group example: /manage-this-group-queue [group id] (This command should work only in bot dm chats), 
+
+
+Error Classification: 
+
+if Chrome fails to launch (e.g., crashed) try again and if still not work then notify admin in dm: ⚠️ Chrome crashed!
+Google Drive API auth failure (add command [/api start working] )we are going to use 2 google drive API because if bot found any kind of error in first api then bot should try again if still bot found any kind of error then bot will shift on other and dm admin in dm (API shifted ) and if both api not working bot should try again on both api if still not working then dm admin (that both api not working) And Bot should wait there on that step till admin use this command (api start working)  then bot should start working from that stap (but bot should accept all those new requests that come during this time) (bot Shouldn't be stopped working on Google Drive API auth failure Bot should wait there on that step till admin use this command [/api-start-working]), If bot face any kind of network issue/ No network then bot will wait for network On that step ( bot will check network add a Lightweight network watching Which will detect network/connection failure bot will  stop On that tasks On that step ( On that request) gracefully during outages and auto start working from that tasks from that stap from where it get stopped When network will start working properly )  when network will start working properly bot will start working from that stap from where it get stopped (bot will start working from where it get stopped, bot will start working from that request from where it get stopped until that Task Qu eue restarted by admin) and bot will notify in admin dm : No network 
+
+Asynchronous Processing: Use asynchronous programming (e.g., Python’s asyncio) to handle tasks like link verification and Google Drive uploads without blocking the bot
+Use a Lightweight Ping Target to Avoid pinging Telegram (rate limits); use 1.1.1.1 (Cloudflare DNS) instead
+
+Configuration File: manage file properly and delete those files which bot uploaded on Google drive 12 hours ago only from google drive (don't delete file from PC I will remove those files manually only delete from Google driv), Implement auto-retry logic for failed downloads/uploads (bot will auto-retry Two times for failed downloads/uploads If it will fail again after two time auto-retry bot will send reply message to that user who requested this file [error contact to admin] bot Will also send failed downloads/uploads Detailed message to admin DM chat And then bot will start working on next request / task) Before uploading the file to Google Drive, Telegram will check whether there is sufficient space in Google Drive If there is not enough space in Google Drive / If the Google Drive storage is full then bot will shift to another APi [ After every api shifting due to storage bot will send message to admin (Google drive API shifted due to storage) in admin dm ] If the second Google Drive  gets filled upto half bot will send message to admin (second Google Drive half storage is used   ) in admin dm and If second Google Drive storage is full then bot will shift to that first APi and [ After every api shifting due to storage bot will send message to admin (Google drive API shifted due to storage) in admin dm ] And If both Google Drive storage is full then bot will send message to admin ( both Google drive storage is full) in admin dm And bot will wait there on that step till admin use this command [/api-start-working] after using this [/api-start-working] command bot will start workingg from that tasks from that stap from where it get stopped (but bot should accept all those new requests that come during this time)
+if File fails to download then Retry once if still it fails then send the error contact to admin  And bot should start working on next request / task
+if Chrome Download Interrupt Detect: File download is complet/ File download is incomplete (check file size or .part files) if File download is incomplete then Delete partial file (If it will be possible then delete) and retry one more time (restart download) and if still it fails then send the error contact to admin  And bot should start working on next request / task
+File download is incomplete/corrupt Verify file checksum before upload and (if download is incomplete/corrupt then try one more time and if still it fails then send the error contact to admin  And bot should start working on next request / task)
+Google Drive Upload Interrupted Detection: Upload ID (gdrive_id) exists but if file is missing in Drive Re-upload from downloaded_path (bot will Re-upload file on google drive only when if bot is working on that Specific  request / task end file got missing  )
+if bot found Duplicate filename in Drive Auto-rename file (Example: file_2.zip), And bot will Send message with file name in admin dm 
+
+
+If Bot get crash then Bot should get Auto-restart script (systemd) and bot will start working according to these backup files/start working from where it get crash 
+Check the queue database for incomplete tasks
+Google Drive Upload Interrupted During crash Detection: Upload ID (gdrive_id) exists but if file is missing in Drive Re-upload from downloaded_path(bot will Re-upload file on google drive only when if bot is working on that Specific  request / task end file got missing  ) 
+if Bot Stopped Mid-Task
+Detection: Task status is "downloading" but no activity for X minutes.
+Action: Reset status to "pending" and retry
+/bot resume task : Manually trigger a queue scan (useful after fixing crashes)Admin Commands ( This command is for very rare use purpose normally bot should auto scan the queue for last incomplete request / task Which is interrupted Because of crash and retry that task And bot should start working from that request / task For remaining request / task  I mean bot should start working from that request / task from where it get crash  )
+On restart, bot should scan for last incomplete request / task Which is interrupted Because of crash and retry that task And bot should start working from that request / task For remaining request / task ( I mean bot should start working from that request / task from where it get crash )
+Atomic Operations: Ensure task status updates are saved to the database before starting operations.
+Resume Logic:
+If a task was downloading:
+Verify if the file exists locally.
+If incomplete, re-download; else proceed to upload.
+If a task was uploading:
+Check Google Drive for partial uploads (via file name or ID).
+Resume upload or retry upload from scratch.
+
+
+Optimize  resource consumption
+Add support for multiple file types with appropriate handling
+Package the bot in a Docker container for consistent deployment
+Create deployment scripts for easy setup
+Manage connections to Google Drive And shrinkme API more efficiently
+Add command (/bot-All-commandlist) In which bot will provide all Command list with their functionality ( Only admin can use this command Only in bot DM chat ) 
+Every command For this telegram bot should have a unique name This will Not create confusion Between two telegram bots
+there are mulipal admins Store admins IDs in a config file/database bot can Checks admins id is Allowed or not in admins IDS (file/database) 
+in this bot only admins can use bot Commands
+Take back up important files in every 8 hours ( Example Authorize admin, authorized groups, guru subscription fashion details, etc) Because if bot will get crash After Auto-restart bot will start working according to these backup files/start working from where it get crash And delete all 48h old/More than 48 hours old back up
+details 48h old/More than 48 hours old queue data 
+Duplicate Tasks	Ignore if the same link with user_id is already "in-progress" in the queue
+if bot face 3 errors/failure then bot will send message to admin
+
+
+add one more command (/bot-error-fixed) if bot face Continuously 5 request/task errors/failure then bot will send message to admin And bot will close all groups (user Cannot send message )And wait there on that step till admin use this command (/bot-error-fixed) after using this (/bot-error-fixed) command bot will  open all groups (user Can send message )And start workingg from that tasks from that stap from where it get stopped 
+I want that PC should not go in sleep mode if bot is running on PC (Screen can get close/sleep mode but not processing )
+And add one more command (all-bot-commond) which will provide all bot commond list
+
+
+(use web scraping For download assets)
+
+
+
+Let's break down this entire system into a professional design document. We'll cover the architecture, database design, workflow, command structure, and the technical stack required.
+Project: "AssetFetch Pro" Telegram Bot
+This is a professional, multi-group, subscription-based file distribution bot designed for resilience, scalability, and robust administrative control.
+1. High-Level Architectural Design
+The system will be composed of several distinct, communicating components. This separation makes it easier to build, debug, and maintain.
+
++------------------+      +---------------------+      +------------------------+
+| Telegram User    |<---->|   Telegram Bot      |<---->|    Task & DB Manager   |
+| (in Group/DM)    |      | (Listener & Poster) |      | (Python + asyncio)     |
++------------------+      +----------+----------+      +-----------+------------+
+                                     ^                         |
+                                     | (Admin DM Alerts)       | (Assigns Tasks)
+                                     v                         v
++------------------+      +----------+----------+      +-----------+------------+
+|  Admin/Owner     |<---->|   Config Files &    |<---->|   File Processing Worker |
+| (in DM)          |      |  SQLite Database    |      | (Selenium + APIs)      |
++------------------+      +---------------------+      +-----------+------------+
+                                                                   |
++------------------------------------------------------------------+
+|
+|--> [1. Selenium/Chrome] --> [2. GDrive API] --> [3. ShrinkMe API] --> (Back to Bot)
+      (Download File)       (Upload & Share)     (Shorten Link)
+
+
+Key Components:
+Telegram Bot (Listener & Poster): The "front desk". Its only jobs are to receive messages, perform initial validation (user/group checks), send messages back, and pass valid requests to the Task Manager. It runs asynchronously to handle many groups at once.
+Task & DB Manager (The Brain): The core of the bot. It manages the SQLite database, handles the task queues (Normal & Priority), and decides which task the Worker should perform next. It communicates with the Bot to post status updates.
+File Processing Worker (The Laborer): A dedicated process that performs the heavy lifting. It picks one task at a time from the queue, launches a controlled Selenium browser instance, downloads the file, uploads it to Google Drive, and shortens the link if required. This isolates potential crashes (e.g., a browser crash) from the main bot logic.
+SQLite Database: The single source of truth for everything: approved groups, admin lists, user rate limits, subscription plans, task queues, and current state.
+Configuration Files (config.ini or config.json): For storing static but sensitive data like API keys, Admin IDs, and Channel links. This keeps them out of the code.
+
+2. Database Schema (SQLite)
+A well-structured database is critical for state persistence and crash recovery.
+Table: admins
+admin_id (INTEGER, PRIMARY KEY): The Telegram User ID of an admin.
+Table: groups
+group_id (INTEGER, PRIMARY KEY): The Telegram Group ID.
+is_approved (BOOLEAN, default: 0): If the bot is allowed to be in this group.
+is_active (BOOLEAN, default: 0): Bot status in the group (for /bot-start, /stop-bot).
+is_paused (BOOLEAN, default: 0): Paused state for /unactivate, /activate.
+subscription_plan (TEXT, default: 'default'): e.g., 'default', '12h', 'free', 'file', '1sub'.
+blocked_websites (TEXT): A JSON list of blocked domain names for this group.
+Table: users
+user_id (INTEGER, PRIMARY KEY): The Telegram User ID.
+last_request_time (DATETIME): Timestamp of the user's last successful request (used for rate-limiting).
+last_request_plan (TEXT): The plan under which the last request was made (e.g., 'default', '12h').
+Table: tasks
+task_id (INTEGER, PRIMARY KEY AUTOINCREMENT)
+user_id (INTEGER)
+group_id (INTEGER)
+message_id (INTEGER): The ID of the user's request message, for replying.
+original_link (TEXT): The user-provided URL.
+edited_link (TEXT): The URL after domain modification.
+status (TEXT, default: 'pending'): pending, downloading, uploading, complete, error, retrying.
+priority (INTEGER, default: 0): 1 for priority queue, 0 for normal.
+created_at (DATETIME)
+error_count (INTEGER, default: 0): How many times this task has failed.
+local_filepath (TEXT): Path to the downloaded file on the PC.
+gdrive_link (TEXT): The resulting Google Drive link.
+
+
+3. The Request Lifecycle (Step-by-Step Flow)
+This is the path a single user request will take.
+Message Received: User sends a message with a link in an approved group.
+Pre-Flight Checks (Performed by the Bot Listener):
+Is User an Admin? If yes, skip user-specific checks.
+Is Bot Active? Check is_active and is_paused for the group_id in the groups table. If not, ignore.
+Is User in Required Channels? Use bot.get_chat_member() for each required channel. If not, delete the message and DM the user the channel links. Cache this result for 5 minutes per user to prevent API spam.
+Is Link Valid?
+Regex check: Does it contain exactly one valid URL from the 8 allowed sites?
+Is the domain blocked in this specific group (groups.blocked_websites)?
+If any check fails, delete the message.
+Rate-Limiting & Subscription Check:
+Look up the group_id's subscription_plan.
+Check the users table for the user_id and their last_request_time.
+Apply the plan's specific rules (e.g., 24-hour wait for 'default'). If the limit is exceeded, reply with the appropriate error message.
+Task Creation:
+If all checks pass, the bot edits the domain name of the link.
+It determines the priority (1 for 'file' and '1sub' plans, 0 for others).
+It inserts a new record into the tasks table with status 'pending'.
+Reply to the user's message: "✅ Request accepted! You are #3 in the queue."
+Queue Processing (Handled by the Worker):
+The worker constantly polls the tasks table.
+Priority First: It first queries for SELECT * FROM tasks WHERE status='pending' AND priority=1 ORDER BY created_at LIMIT 1.
+Then Normal: If no priority tasks exist, it queries for SELECT * FROM tasks WHERE status='pending' AND priority=0 ORDER BY created_at LIMIT 1.
+
+(
+  Challenge 3: The Dual Priority Queue System
+Database Design: The task_queue table in SQLite will have a priority column (e.g., 0 for Normal, 1 for Priority).
+Processing Logic:
+The bot's main loop first queries the database: SELECT * FROM task_queue WHERE priority = 1 ORDER BY created_at ASC.
+It processes all priority tasks it finds.
+Only when the priority queue is empty does it query: SELECT * FROM task_queue WHERE priority = 0 ORDER BY created_at ASC LIMIT 1.
+It processes this one normal task.
+The loop repeats, always checking for priority tasks first.
+Feasibility: This is a standard queuing pattern and is very achievable.
+)
+
+
+File Download (Worker):
+Update task status to 'downloading'.
+Launch Selenium with the specified Chrome Profile in headless mode.
+Navigate to the edited_link.
+Locate and click the download button (this will require custom logic/selectors for each of the 8 websites).
+Monitor the download directory for completion (e.g., watch for .crdownload or .part files to disappear and the file size to stabilize).
+File Upload & Sharing (Worker):
+Update task status to 'uploading'.
+Perform pre-upload checks:
+File Size Check: Is the file size > 245MB for 'default' or '12h' plans? If so, abort, set status to 'error', and notify the user.
+GDrive Space Check: Use the GDrive API's about.get() to check available space. Switch to the alternate API if needed/full. Pause if both are full.
+Upload the file to Google Drive. Handle renaming for duplicates.
+Set sharing permissions to "anyone with the link can view".
+Link Shortening & Final Delivery (Worker -> Bot):
+If the plan requires it, call the shrinkme.io API to shorten the GDrive link.
+The worker passes the final link (GDrive or ShrinkMe) back to the main Bot process.
+The bot replies to the original message ID with the final link.
+Sends the "please donate" message if applicable.
+Cleanup:
+Update the tasks table status to 'complete'.
+Update the users table with the new last_request_time.
+
+
+4. Admin Commands & Controls
+This structure provides granular control. All commands are restricted to admin_ids.
+Command	Scope	Functionality
+Group Management		
+/groupapprovae [group_id]	DM	Manually approves a new group ID and adds it to the database.
+/allapprovaedgroup	DM	Lists all approved group IDs from the database.
+/deletethisapprovaedgroup [group_id]	DM	Removes a group from the approved list. Bot will auto-leave on next message.
+Bot Lifecycle		
+/bot-start	Group	Sets is_active to 1 for that group. Bot starts accepting requests. Displays admin menu.
+/stop-bot	Group	Sets is_active to 0. Bot stops responding and deletes the menu.
+/unactivate	Group (in Menu)	Sets is_paused to 1. Bot temporarily ignores all messages in the group.
+/activate	Group (in Menu)	Sets is_paused to 0. Bot resumes normal operation.
+Subscription Management		
+/defaultsubscription	Group	Sets subscription_plan to 'default' for that group.
+/12hsubscription	Group	Sets subscription_plan to '12h' for that group.
+/freesubscription	Group	Sets subscription_plan to 'free' for that group.
+/filesubscription	Group	Sets subscription_plan to 'file' for that group.
+/1subscription	Group	Sets subscription_plan to '1sub' for that group.
+Content Management		
+/block-website [domain]	Group	Adds a domain to the group's blocked_websites list.
+/unblock-website [domain]	Group	Removes a domain from the group's blocked_websites list.
+Queue & Task Management		
+/reset_queue	Group	Deletes all 'pending' tasks from the tasks table for that group_id.
+/manage_this_group_queue	DM	Displays a list of pending tasks (Link, User) for a specified group.
+/api-start-working	DM	Clears the "GDrive Full" pause flag, allowing the uploader to resume.
+/bot_resume_task	DM	Forces the worker to re-scan the queue for stuck/incomplete tasks.
+Utility		
+/all-bot-commond	DM	Displays this list of all commands and their functions.
+
+5. Error Handling & Resilience Plan
+This is what makes the bot professional.
+Network Failure: The worker will use a lightweight ping to 1.1.1.1. If it fails, it will pause its current operation (e.g., a download) and retry the ping every 30 seconds. Once the network is back, it will resume the task from where it left off. All actions (download, upload) will be designed to be resumable. The main bot listener will also pause. The Admin will be notified once: "⚠️ Network connection lost. Pausing operations." and again on recovery.
+Chrome/Download Failure: Downloads will be retried twice. If the file download is interrupted (checked via .crdownload file or checksum), the partial file is deleted, and the download restarts. If it fails a third time, the task status is set to 'error', the user is notified, a detailed log is sent to the admin's DM, and the worker moves to the next task.
+Google Drive Failure:
+Auth: On auth failure, an alert is sent to the Admin DM. The bot will not attempt uploads until fixed.
+Storage Full: The bot will automatically switch to the secondary API key. It will notify the admin on each switch. If both are full, it sends a critical alert to the admin and pauses all uploading tasks (while still downloading and queueing new requests) until the /api-start-working command is used.
+Crash Recovery (Auto-Restart):
+We will use a process manager like systemd (on Linux) or a simple PowerShell/Batch script on Windows that runs the Python script in a loop. If the script crashes, it's automatically restarted.
+On Restart: The bot's first action is to scan the tasks table for any tasks stuck in 'downloading' or 'uploading' status. It will then intelligently resume:
+If 'downloading': Check if local_filepath exists and is complete. If yes, move to upload. If not, re-download.
+If 'uploading': Check GDrive if the file exists. If yes, get the link. If not, re-upload from local_filepath.
+PC Sleep: We'll use a Python library like caffeine or a simple PowerShell command run by the bot script (Set-ThreadExecutionState -ExecutionState Continuous -SystemRequired) to prevent the PC from entering sleep mode while the bot is running.
+6. Technical Stack & Setup (Windows PC)
+Python 3.9+
+Libraries:
+python-telegram-bot (v20+) for the async bot framework.
+selenium for browser automation.
+google-api-python-client, google-auth-httplib2, google-auth-oauthlib for GDrive.
+requests for the ShrinkMe API.
+apscheduler for background tasks like deleting old GDrive files and backups.
+pyperclip (or similar) might be useful for clipboard interactions if needed.
+Google Chrome: Installed normally.
+ChromeDriver: The executable that Selenium uses to control Chrome. Must match the installed Chrome version.
+SQLite: Comes built-in with Python.
+APIs:
+Telegram: Bot Token from BotFather.
+Google Drive: Two separate sets of API credentials (credentials.json) from the Google Cloud Platform Console.
+ShrinkMe.io: API key from your account dashboard.
+Auto-Restart Script (Windows): A simple .bat file:
+
+
+
+
+Auto-Restart Script (Windows): A simple .bat file:
+Generated batch
+@echo off
+:start
+echo Starting bot...
+python main_bot.py
+echo Bot crashed. Restarting in 10 seconds...
+timeout /t 10
+goto start
+Use code with caution.
+Batch
+This detailed plan covers all your requirements. We have a clear path forward for development, focusing on building each component separately and then integrating them.
+The next step would be to start Phase 1: Foundation, which involves setting up the environment, writing the basic bot listener, and implementing the admin/group authentication from the database. We can proceed with coding that part whenever you're ready.
+
+___________________________________________________________________________________________
+
+
+1. Project Scope & Objectives
+Develop a Windows-hosted Telegram bot that:
+
+Automates file downloads from 8 specified websites (freepik, envato elements, vecteezy, pngtree, motion array, pikbest, storyblocks, iconscout) to Telegram groups.
+Enforces user authentication via channel membership.
+Manages group-specific subscriptions with usage limits.
+Handles concurrent requests across multiple groups.
+Integrates with Chrome (headless mode), Google Drive API, and shrinkme.io API.
+Implements robust error recovery, task queuing, and resource optimization.
+2. Core Features & Functional Requirements
+2.1 User Authentication & Group Access Control
+Channel Membership Verification:
+Predefined Channels: Store 3 channel IDs/links in a config file (e.g., channels.json).
+Check Workflow:
+1.
+When a user sends a message/link in a group, the bot checks if the user is a member of all 3 channels.
+2.
+Use Telegram API getChatMember to verify membership (status: member or administrator).
+3.
+If any channel is not joined, delete the user’s message and reply with:
+[Channel 1 Link] [Channel 2 Link] [Channel 3 Link] Join all 3 channels to use the bot!
+Storage: Track channel IDs in channels.json (not hardcoded).
+Group Authorization:
+Allowed Groups: Store approved group IDs in allowed_groups.db (SQLite table: groups (group_id TEXT PRIMARY KEY)).
+Auto-Leave Unauthorized Groups:
+1.
+On bot startup, fetch all groups where the bot is a member.
+2.
+For each group, check if group_id exists in allowed_groups.db.
+3.
+If not, bot leaves the group and sends a DM to admins:
+⚠️ Unauthorized group detected! Group ID: [group_id] Action: Bot auto-left.
+Dynamic Approval via DMs:
+Admin-Only Commands (executed in bot’s DM):
+/groupapprovae [group_id]: Add group_id to allowed_groups.db.
+/allapprovaedgroup: List all approved groups (reply with Approved Groups: [group_id1], [group_id2], ...).
+/deletethisapprovaedgroup [group_id]: Remove group_id from allowed_groups.db.
+2.2 Subscription Management
+Subscription Types & Rules:
+Table: subscriptions (group_id TEXT, subscription_type TEXT, start_time DATETIME, last_reset_time DATETIME, request_count INT)
+Activation Commands (admin-only, in group):
+/defaultsubscription: Activate default subscription (max 1 request/user/24h, 245MB limit, shrinkme links).
+/12hsubscription: 12h subscription (max 1 request/user/12h, 245MB, shrinkme).
+/freesubscription: Free (no size limit, 1 request/user/24h, Google Drive links).
+/filesubscription: File subscription (unlimited requests, 1-min gap between messages, priority queue).
+/1subscription: 1subscription (unlimited requests, no restrictions, priority queue).
+Subscription Persistence:
+Store active subscription per group in subscriptions.db.
+On bot restart, load subscriptions from DB to resume limits (e.g., reset daily counters at midnight).
+User Limits:
+Track user_id and last_request_time in user_limits (user_id TEXT, group_id TEXT, last_request_time DATETIME, request_count INT).
+Enforce limits (e.g., 1 request/24h for default) by checking last_request_time and request_count.
+2.3 File Handling & Automation
+Link Validation:
+Allowed Domains: Store in allowed_domains.json (e.g., ["freepik.com", "envatoelements.com", ...]).
+Validation Workflow:
+1.
+Extract links from user messages (ignore messages with >1 link).
+2.
+Check if domain is in allowed_domains.json.
+3.
+Verify link structure (e.g., freepik.com/... is valid; freepik.net is blocked).
+Invalid Link Response: Ignore message; no reply to user.
+Chrome Automation:
+Profile Setup:
+Use a pre-configured Chrome profile (path: chrome_profile/) with cookies/logins saved.
+Launch in headless mode via Selenium/Playwright:
+options = ChromeOptions() options.add_argument("--headless") options.add_argument(f"user-data-dir={chrome_profile_path}")
+Tab Management:
+Max 3-4 tabs open at once. Reuse tabs for same domain (e.g., freepik.com uses 1 tab).
+Close tabs after download completes (or after 5min idle).
+File Download:
+Steps:
+1.
+Navigate to the link in Chrome.
+2.
+Wait for download button to be clickable (use explicit waits).
+3.
+Click download; monitor download progress via Chrome’s downloads API.
+4.
+Verify download completion:
+Check file size matches expected (e.g., via HTTP header Content-Length).
+Check for .part files (incomplete downloads); delete if found.
+Retries: 2 auto-retries on failure (e.g., network error, element not found).
+Google Drive Upload:
+API Setup:
+Use 2 Google Drive APIs (OAuth 2.0 credentials stored in drive_creds1.json and drive_creds2.json).
+Check storage:
+For API 1: drive1_storage = get_storage(api1)
+For API 2: drive2_storage = get_storage(api2)
+Upload Workflow:
+1.
+Check if API 1 has space. If yes, upload to API 1.
+2.
+If API 1 is full, switch to API 2. Notify admin: Google Drive API shifted due to storage (API 1 → API 2).
+3.
+If API 2 is 50% full, notify admin: Second Google Drive half storage used.
+4.
+If both APIs are full, wait for admin to run /api-start-working.
+Link Conversion:
+For subscriptions requiring shrinkme.io (default/12h), convert Google Drive link via API:
+shrinkme_link = requests.post("https://shrinkme.io/api", data={"url": drive_link})
+File Management:
+Local Storage: Save files to downloads/[group_id]/[user_id]/[timestamp]/. Delete files 12h after upload.
+Google Drive Cleanup: Run a cron job every 12h to delete files older than 12h (query via Google Drive API).
+2.4 Task Queue & Error Handling
+Queue Database:
+Table: tasks (task_id INTEGER PRIMARY KEY, group_id TEXT, user_id TEXT, link TEXT, status TEXT, priority BOOLEAN, created_at DATETIME, retries INT).
+Status Values: pending, downloading, uploading, completed, failed.
+Priority: filesubscription and 1subscription tasks are priority=1; others priority=0.
+Queue Processing:
+Normal Queue: Process tasks with priority=0 in FIFO order.
+Priority Queue: After every normal task, check all groups’ priority queues; process all priority tasks first.
+Group-Specific Queues: Track tasks per group (e.g., SELECT * FROM tasks WHERE group_id = ? ORDER BY priority DESC, created_at).
+Error Classification & Recovery:
+Chrome Crash:
+Detect via WebDriverException (e.g., unknown error: Chrome failed to start).
+Retry 2x; if still fails, notify admin DM: ⚠️ Chrome crashed!.
+Google Drive API Failure:
+If API 1 fails, try API 2. If both fail, notify admin: Both Google Drive APIs failed. Use /api-start-working to resume..
+Pause task until admin runs /api-start-working.
+Network Issues:
+Use lightweight ping (1.1.1.1) every 30s. If 3 consecutive failures, pause task and notify admin: No network. Retrying....
+Auto-resume when network is back.
+Download/Upload Failures:
+Incomplete Download: Check file size or .part files. Retry 2x; if fails, reply to user: Error: File download failed. Contact admin..
+Corrupt File: Verify checksum (e.g., SHA-256) against expected value (pre-stored for known files). Retry 2x; else, notify admin.
+Upload Interruption: Check Google Drive for partial uploads via gdrive_id. Resume or re-upload from downloaded_path.
+Crash Recovery:
+Auto-Restart: Use systemd service to restart bot on crash.
+Resume Logic:
+On startup, check tasks table for tasks with status IN ('downloading', 'uploading').
+For downloading tasks: Verify local file exists and is complete. If not, re-download.
+For uploading tasks: Check Google Drive for gdrive_id. If missing, re-upload.
+Manual Resume: Admin command /bot resume task [task_id] to force retry a specific task.
+2.5 Admin Commands & Security
+Admin-Only Commands (executed in bot DM):
+/bot-start [group_id]: Activate bot in group_id (if approved).
+/stop-bot [group_id]: Deactivate bot in group_id (remove from allowed_groups.db temporarily).
+/manage-this-group-queue [group_id]: List pending tasks, priorities, and reset queue (delete tasks where group_id = ?).
+/block-website [domain]: Add domain to blocked_domains.json (group-specific via blocked_domains (group_id TEXT, domain TEXT)).
+/unblock-website [domain]: Remove from blocked_domains.json.
+/api-start-working: Resume tasks paused due to API/storage issues.
+/bot-All-commandlist: Reply with all commands (e.g., /defaultsubscription, /groupapprovae, etc.).
+Admin Authentication:
+Store admin Telegram user IDs in admins.json (e.g., ["123456789", "987654321"]).
+Ignore commands from non-admin DMs; reply: Contact admin for support..
+2.6 Resource & Deployment
+Resource Management:
+Prevent Sleep: Use pywin32 to call SetThreadDpiAwareness or SendInput to keep PC awake.
+Chrome Memory: Close tabs after 5min idle; limit to 3-4 tabs.
+Deployment:
+Docker Setup:
+Dockerfile: Use python:3.9-slim, install Chrome, Selenium, Playwright, and dependencies.
+Mount volumes for downloads/, chrome_profile/, and config files (channels.json, allowed_groups.db, etc.).
+Scripts:
+start_bot.bat: Launch Docker container, check dependencies, start bot.
+backup.sh: Every 8h, backup allowed_groups.db, subscriptions.db, tasks.db to backups/. Delete backups older than 48h.
+3. Technical Components
+3.1 Tech Stack
+Language: Python 3.9+ (asyncio support).
+Libraries:
+python-telegram-bot (v20+) for Telegram API.
+selenium or playwright for Chrome automation.
+google-api-python-client for Google Drive.
+requests for shrinkme.io API.
+sqlite3 for database.
+schedule for cron jobs (e.g., cleanup).
+APIs:
+Telegram Bot API (token stored in bot_token.txt).
+Google Drive API (OAuth 2.0 credentials in drive_creds1.json, drive_creds2.json).
+shrinkme.io API (API key in shrinkme_key.txt).
+3.2 Asynchronous Workflow
+Use asyncio to handle concurrent tasks:
+Link Verification: Non-blocking check of domain validity.
+Chrome Navigation: Run in background threads to avoid blocking the event loop.
+Google Drive Upload: Use async HTTP requests (e.g., aiohttp).
+3.3 Network Monitoring
+Lightweight Ping:
+Every 30s, send a ping to 1.1.1.1 (Cloudflare DNS).
+Track consecutive failures; pause tasks if >3 failures.
+4. Edge Cases & Validation
+4.1 Input Validation
+Message Handling:
+Ignore messages with:
+1 link (regex: https?://\S+; count matches).
+
+Links not in allowed_domains.json.
+Links with invalid structure (e.g., freepik.com but no path).
+User Permissions:
+Only admins can use bot DMs; others get redirected.
+Only admins can use group commands (e.g., /defaultsubscription).
+4.2 Error Scenarios
+Duplicate Tasks:
+Check if (user_id, group_id, link) exists in tasks with status IN ('pending', 'downloading', 'uploading'). If yes, ignore.
+Bot Crashes During Task:
+On restart, query tasks for status = 'downloading' or status = 'uploading'.
+Verify local file exists and is complete (for downloading).
+Verify Google Drive file exists (for uploading).
+Retry if incomplete/missing.
+5. Deliverables
+5.1 Code Structure
+Modules:
+main.py: Entry point, initializes bot, loads configs.
+auth.py: Handles channel/group verification, admin checks.
+subscriptions.py: Manages subscription activation/limits.
+file_handler.py: Chrome automation, download/upload logic.
+queue.py: Task queue management (priority, retries).
+error_handling.py: Classifies errors, triggers recovery.
+admin_commands.py: Processes admin DMs.
+Config Files:
+channels.json: {"channels": ["https://t.me/channel1", ...]}
+allowed_groups.db: SQLite DB with groups table.
+admins.json: {"admins": [123, 456]}
+blocked_domains.json: {"group_id": ["domain1", ...]}
+5.2 Documentation
+Setup Guide:
+Install Chrome, Python, dependencies.
+Configure Chrome profile path, API keys, bot token.
+Run start_bot.bat (Docker) or python main.py.
+Admin Guide:
+List of commands (e.g., /groupapprovae, /api-start-working).
+How to troubleshoot (e.g., restart bot, check logs).
+Note: Prioritize modularity, error logging, and atomic operations (save task status to DB before starting downloads/uploads). Test edge cases (e.g., simultaneous group requests, API failures) and ensure the bot resumes correctly after crashes.
+
+___________________________________________________________________________________________
+
+Professional Telegram Bot for File Downloading and Distribution
+Project Overview
+Develop a professional Telegram bot to download files from specified websites and distribute them to users across multiple Telegram groups. The bot will run on a Windows PC, utilizing a specific Chrome browser profile in headless mode, and integrate with Google Drive and ShrinkMe.io APIs for file storage and link conversion. It will feature subscription plans, queue management, group authentication, and robust error handling.
+Core Functionalities
+1. Website Integration
+
+Supported Websites: Freepik, Envato Elements, Vecteezy, PNGTree, Motion Array, Pikbest, Storyblocks, Iconscout.
+Link Verification: Validate links to ensure they are from supported websites, correct, and downloadable. Ignore messages with:
+Incorrect or broken links.
+Multiple links in a single message.
+Links from unsupported websites or pages without downloadable content.
+
+
+Link Editing: After receiving a valid link, edit the domain name to a specific, unique domain per website (e.g., freepik.com → freepik-edited.com, envatoelements.com → envato-edited.com).
+
+2. File Download and Distribution
+
+Browser Usage: Use a specific Chrome profile in headless mode on the host Windows PC.
+Install Chrome extensions as needed in this profile.
+Limit open tabs to 3-4 to manage resources.
+Allow manual opening of the profile like a normal browser when required.
+
+
+Download Process: 
+Assume websites are already logged in via the Chrome profile. If login is required, notify the admin via DM.
+Download files to the PC, then upload to Google Drive via API.
+
+
+Distribution: Reply to the requesting user in the group with a direct Google Drive link or a ShrinkMe.io-converted link (based on subscription).
+
+3. Group and User Management
+
+Multi-Group Handling: Process requests from multiple groups simultaneously.
+Channel Subscription Check:
+Require normal users to join three recommended Telegram channels before sending requests.
+Verify user membership in these channels for each request.
+If not joined, delete the user’s message and send a reply with channel links and a "Join first" message.
+
+
+Authentication:
+Store authorized group IDs in a config file or SQLite database.
+On joining a group, check if the group ID is authorized:
+If unauthorized, auto-leave and notify admin via DM with the group ID.
+If authorized, remain in the group.
+
+
+
+
+Dynamic Group Approval:
+/groupapprove: Admin-only command (DM) to approve a new group and add its ID to the database.
+/allapprovedgroups: Admin-only command (DM) to list all approved group IDs.
+/deletethisapprovedgroup: Admin-only command (DM) to remove a group ID from the database.
+
+
+
+4. Subscription Plans
+
+General Rules:
+Store subscription details per group in a database to resume after crashes.
+Only admins can activate subscriptions via commands in groups.
+Activating a new subscription deactivates others in that group.
+
+
+Plans:
+Default Subscription (/defaultsubscription):
+Auto-activated if no other subscription is specified after /bot-start.
+Max file size: 245MB (reject larger files with "File size exceeds 245MB, purchase premium/contact admin").
+Convert Google Drive links to ShrinkMe.io links via API.
+Limit: 1 file per user per 24 hours. Exceeding limit shows "Free limit exceeded, wait 24 hours or purchase Pro".
+Post-delivery message: "[@username/user_id] If you like our service, please donate".
+
+
+12h Subscription (/12hsubscription):
+Max file size: 245MB (same rejection message).
+ShrinkMe.io link conversion.
+Limit: 1 file per user per 12 hours (same exceed message with 12-hour wait).
+Same donation message.
+
+
+Free Subscription (/freesubscription):
+No file size limit.
+Direct Google Drive link (no ShrinkMe conversion).
+Limit: 1 file per user per 24 hours (same exceed message).
+Same donation message.
+
+
+File Subscription (/filesubscription):
+No file size limit.
+Unlimited files, 1-minute cooldown between requests (restrict user messaging for 1 minute).
+Uses priority queue.
+Processing message: "Your request is accepted, processing".
+
+
+1Subscription (/1subscription):
+No file size limit.
+Unlimited files, no cooldown.
+Uses priority queue.
+Processing message: "Your request is accepted, processing".
+
+
+
+
+Additional Commands:
+/activate: Resume bot in a group from its last state.
+/unactivate: Pause bot in a group (ignore all requests until /activate).
+
+
+
+5. Queue Management
+
+Database: Use SQLite to track requests per group.
+Queue Types:
+Normal Queue: Default for Default, 12h, and Free subscriptions.
+Priority Queue: For File and 1Subscription plans. After each normal queue task, check and process all priority queue tasks first.
+
+
+Per-Group Queues: Manage separate queues for each group.
+Commands:
+/reset-queue: Admin-only, resets queue for the specific group.
+/manage-this-group-queue [group_id]: Admin-only (DM), monitor and manage pending requests for a group.
+
+
+
+6. Error Handling
+
+Chrome Failure: Retry once; if it fails again, DM admin: "⚠️ Chrome crashed!".
+Google Drive API:
+Use two APIs. On failure, retry, then switch APIs and DM admin: "API shifted". If both fail, wait for /api-start-working and DM: "Both APIs not working".
+Check storage before upload:
+Switch API if full (DM: "API shifted due to storage").
+Notify at half capacity of second API (DM: "Second Google Drive half storage used").
+If both full, wait for /api-start-working (DM: "Both Google Drive storage full").
+
+
+
+
+Network Issues: Pause on failure, ping 1.1.1.1 to detect recovery, resume automatically, DM admin: "No network".
+Download/Upload Failures: Retry twice, then notify user ("Error, contact admin") and admin (detailed message), proceed to next task.
+Crash Recovery: Auto-restart, resume incomplete tasks from queue database.
+
+7. Resource and File Management
+
+File Handling:
+Delete Google Drive files older than 12 hours (keep local files).
+Rename duplicates (e.g., file_2.zip) and DM admin with new name.
+
+
+PC Sleep Prevention: Ensure PC processing continues even if the screen sleeps.
+
+8. Admin Features
+
+DM Restrictions: Ignore normal user DMs, reply with group/channel links. Admins can use DM commands.
+Commands:
+/block-website & /unblock-website: Block/unblock websites per group (notify users: "This website is not available, contact admin").
+/bot-All-commandlist: List all commands and functions (admin-only, DM).
+/bot-error-fixed: After 5 consecutive task failures, pause bot, wait for this command to resume.
+
+
+Multi-Admin: Store admin IDs in config/database, verify before command execution.
+
+9. Technical Specifications
+
+Language: Python.
+Libraries: python-telegram-bot, selenium, google-api-python-client, sqlite3, asyncio.
+Deployment: Docker container on Windows PC.
+
+10. Resilience and Backup
+
+Auto-Restart: Use systemd or similar for crash recovery.
+Backups: Save critical data (group IDs, subscriptions, queues) every 8 hours, delete backups older than 48 hours.
+Resume Logic: On restart, scan queue for incomplete tasks and resume.
+
+___________________________________________________________________________________________
+
+
+The objective is to develop a sophisticated Telegram bot that automates downloading files from eight specific websites, uploads them to Google Drive, and shares download links with users in multiple Telegram groups. The bot must enforce user subscriptions, channel membership requirements, group authentication, and queue management. It will run on a Windows PC, leveraging a specific Chrome browser profile in headless mode, and integrate with Google Drive and ShrinkMe.io APIs. The bot must be resilient, resource-efficient, and capable of handling errors and crashes gracefully, with detailed admin notifications and automated recovery mechanisms.
+
+Detailed Functional Specifications
+1. Website Integration
+
+Supported Websites: The bot must support downloading files from the following websites:
+Freepik (freepik.com)
+Envato Elements (envatoelements.com)
+Vecteezy (vecteezy.com)
+PNGTree (pngtree.com)
+Motion Array (motionarray.com)
+Pikbest (pikbest.com)
+Storyblocks (storyblocks.com)
+Iconscout (iconscout.com)
+
+
+Link Verification:
+Validate incoming URLs to ensure they originate from one of the supported websites using regex patterns (e.g., r'^(https?://)?([a-zA-Z0-9-]+\.)?freepik\.com/.*$' for Freepik).
+Check if the URL points to a downloadable resource by inspecting the page for a download button or file link (e.g., <a href="...">Download</a> or specific class names like .download-btn).
+Ignore messages if:
+The URL is malformed or broken (e.g., HTTP 404 or invalid format).
+The message contains multiple URLs (e.g., two or more links separated by spaces or newlines).
+The URL is from an unsupported website (e.g., shutterstock.com).
+The page does not offer a downloadable file (e.g., blog posts, homepages, or login pages).
+
+
+Rejection message: "Invalid or unsupported link. Please provide a single, valid download link from a supported website."
+
+
+Link Editing:
+Replace the original domain with a pre-configured alternative domain for each website, stored in a configuration dictionary:
+freepik.com → freepik-download.com
+envatoelements.com → envato-download.com
+vecteezy.com → vecteezy-download.com
+pngtree.com → pngtree-download.com
+motionarray.com → motion-download.com
+pikbest.com → pikbest-download.com
+storyblocks.com → storyblocks-download.com
+iconscout.com → iconscout-download.com
+
+
+Log the original and edited URLs in a log file (e.g., bot.log) with timestamps and user IDs for debugging.
+Ensure the edited URL is accessible and functional; if not, notify the admin via DM: "Failed to access edited URL for : ".
+
+
+
+2. File Download and Distribution
+
+Browser Configuration:
+Use Selenium WebDriver with a specific Chrome profile located at C:\Users\<User>\AppData\Local\Google\Chrome\User Data\BotProfile.
+Configure Chrome options:
+--headless to run in the background without a visible UI.
+--disable-gpu to optimize performance in headless mode.
+--no-sandbox to avoid permission issues.
+--user-data-dir=C:\Users\<User>\AppData\Local\Google\Chrome\User Data\BotProfile to use the specified profile.
+--download.default_directory=C:\BotDownloads to set the download directory.
+
+
+Allow manual opening of the Chrome profile as a normal browser by ensuring the profile directory is accessible outside headless mode.
+Install Chrome extensions (e.g., a download manager or ad-blocker) via CRX files or manual setup in the profile before bot deployment.
+Limit concurrent open tabs to 3–4 to manage memory and CPU usage:
+Maintain a tab queue in memory; close the oldest tab when opening a new one if the limit is reached.
+Use driver.window_handles to track and manage tabs.
+
+
+
+
+Download Workflow:
+Navigate to the edited URL using Selenium.
+Use explicit waits (WebDriverWait) to locate the download button (e.g., CSS selector .download-btn or XPath //a[contains(text(), 'Download')]).
+Trigger the download by simulating a click or extracting the direct file URL.
+Monitor the download directory (C:\BotDownloads) for the file’s arrival, checking for .part or .crdownload files to detect incomplete downloads.
+Timeout after 60 seconds; retry once if the download fails or is incomplete (e.g., file size mismatch or .part file persists).
+If the website requires login, detect login prompts (e.g., <form id="login-form">) and notify the admin via DM: "Login required for : . Please check the Chrome profile."
+
+
+Upload Workflow:
+Authenticate with Google Drive API using OAuth 2.0 credentials stored in credentials.json (service account or user-based).
+Check available storage using drive_service.about().get(fields='storageQuota').execute() before uploading.
+Upload the file with metadata:
+name: Original filename (e.g., image.png).
+mimeType: Detect based on file extension (e.g., image/png, video/mp4).
+parents: Specify a Google Drive folder ID (e.g., bot_uploads_folder).
+
+
+Generate a shareable direct download link (https://drive.google.com/uc?id=<file_id>).
+For subscriptions requiring ShrinkMe.io conversion:
+Use the ShrinkMe.io API: POST https://shrinkme.io/api?api_key=<key>&url=<drive_link>.
+Handle API errors (e.g., rate limits, invalid key) by retrying once after 5 seconds; if failed, notify admin: "ShrinkMe.io API error: ".
+
+
+Reply to the user in the group with the appropriate link (Google Drive or ShrinkMe.io) as a reply to their original message.
+
+
+File Type Support:
+Handle multiple file types (e.g., .png, .jpg, .mp4, .zip, .psd, .ai) by detecting MIME types and ensuring compatibility with Google Drive uploads.
+Verify file integrity using checksums (e.g., MD5 or SHA256) before uploading; retry once if corrupt.
+
+
+
+3. Group and User Management
+
+Multi-Group Handling:
+Use python-telegram-bot’s Updater and Dispatcher to handle messages from multiple groups concurrently.
+Maintain a per-group state in memory and sync with the database to track active subscriptions and queues.
+
+
+Channel Subscription Verification:
+Require users to join three Telegram channels (e.g., @Channel1, @Channel2, @Channel3) before processing requests.
+Use getChatMember API to check membership status (member, administrator, or creator).
+Cache results in memory (e.g., Redis or a Python dictionary) for 5 minutes to avoid hitting Telegram API rate limits.
+If not joined, delete the user’s message using deleteMessage and reply: "Please join the following channels to use the bot: @Channel1, @Channel2, @Channel3."
+
+
+Group Authentication:
+Store authorized group IDs in an SQLite table:
+Schema: groups (group_id INTEGER PRIMARY KEY, approved BOOLEAN DEFAULT 0, added_at TIMESTAMP).
+
+
+On receiving a new_chat_members update (when the bot is added to a group):
+Query the database: SELECT approved FROM groups WHERE group_id = ?.
+If approved = 0 or not found, call leaveChat and send a DM to the admin: "Bot added to unauthorized group: . Use /groupapprove to authorize."
+
+
+Log all group join/leave events in bot.log with timestamps and group details.
+
+
+Dynamic Group Approval:
+/groupapprove <group_id> (admin-only, DM):
+Validate the group ID format (negative integer, e.g., -100123456789).
+Insert or update: INSERT OR REPLACE INTO groups (group_id, approved, added_at) VALUES (?, 1, CURRENT_TIMESTAMP).
+Reply: "Group  approved."
+
+
+/allapprovedgroups (admin-only, DM):
+Query: SELECT group_id FROM groups WHERE approved = 1.
+Reply with a formatted list: "Approved groups:\n- \n- ".
+
+
+/deletethisapprovedgroup <group_id> (admin-only, DM):
+Delete: DELETE FROM groups WHERE group_id = ?.
+Reply: "Group  removed from approved list."
+
+
+
+
+Admin Management:
+Store admin IDs in a config file (config.json) or database table: admins (user_id INTEGER PRIMARY KEY).
+Verify admin status for commands: SELECT user_id FROM admins WHERE user_id = ?.
+Ignore non-admin commands with a reply: "Only admins can use this command."
+
+
+
+4. Subscription Plans
+
+Database Schema:
+Table: subscriptions (group_id INTEGER PRIMARY KEY, plan TEXT, activated_at TIMESTAMP, last_updated TIMESTAMP).
+Table: user_requests (user_id INTEGER, group_id INTEGER, last_request TIMESTAMP, request_count INTEGER, PRIMARY KEY (user_id, group_id)).
+Sync in-memory state with the database every 5 minutes to handle crashes.
+
+
+Plan Details:
+Default Subscription (/defaultsubscription):
+Auto-activated if no other plan is specified after /bot-start.
+File size limit: 245MB (check with os.path.getsize(file)).
+Rejection message: "File size exceeds 245MB. Purchase premium or contact admin."
+Convert Google Drive links to ShrinkMe.io links.
+Limit: 1 file per user per 24 hours (tracked in user_requests).
+Exceed message: "Your free limit is exceeded. Wait 24 hours or purchase Pro. Contact admin."
+Post-delivery donation message: "[@username or user_id] If you like our file share service, please donate."
+
+
+12h Subscription (/12hsubscription):
+Activated by admin command in the group.
+File size limit: 245MB (same rejection message).
+ShrinkMe.io link conversion.
+Limit: 1 file per user per 12 hours (tracked in user_requests).
+Exceed message: "Your free limit is exceeded. Wait 12 hours or purchase Pro. Contact admin."
+Same donation message.
+
+
+Free Subscription (/freesubscription):
+Activated by admin command.
+No file size limit.
+Direct Google Drive link (no ShrinkMe conversion).
+Limit: 1 file per user per 24 hours.
+Same exceed and donation messages.
+
+
+File Subscription (/filesubscription):
+Activated by admin command.
+No file size limit.
+Unlimited files, but enforce a 1-minute cooldown per user using an in-memory lock (e.g., asyncio.Lock).
+Uses priority queue.
+Processing message: "Your request is accepted, processing (File Subscription)."
+
+
+1Subscription (/1subscription):
+Activated by admin command.
+No file size limit or cooldown.
+Uses priority queue.
+Processing message: "Your request is accepted, processing (1Subscription)."
+
+
+
+
+Subscription Management:
+When a new plan is activated, update subscriptions table: INSERT OR REPLACE INTO subscriptions (group_id, plan, activated_at, last_updated) VALUES (?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP).
+On bot crash, restore the last active plan per group from the database.
+If the bot is removed from a group, delete its subscription: DELETE FROM subscriptions WHERE group_id = ?.
+
+
+
+5. Queue Management
+
+Database Schema:
+Table: queues (id INTEGER PRIMARY KEY AUTOINCREMENT, group_id INTEGER, user_id INTEGER, link TEXT, priority BOOLEAN, status TEXT, added_at TIMESTAMP, updated_at TIMESTAMP).
+Status values: pending, downloading, uploading, completed, failed.
+
+
+Queue Types:
+Normal Queue: For Default, 12h, and Free subscriptions.
+Priority Queue: For File and 1Subscription plans.
+Use two asyncio.Queue instances to manage tasks in memory, synced with the database.
+
+
+Processing Logic:
+After completing each normal queue task, check all priority queues across groups.
+Process all priority tasks before resuming normal queue tasks.
+Update queues.updated_at and queues.status before and after each operation to ensure crash recovery.
+
+
+Commands:
+/reset-queue (admin-only, group-specific):
+Clear queue: DELETE FROM queues WHERE group_id = ? AND status != 'completed'.
+Reply: "Queue reset for this group."
+
+
+/manage-this-group-queue <group_id> (admin-only, DM):
+Query: SELECT id, user_id, link, status, priority FROM queues WHERE group_id = ?.
+Reply with a formatted list: "Pending requests for group :\n- Task :  (Status: , Priority: <yes/no>)".
+Allow resetting specific tasks: DELETE FROM queues WHERE id = ?.
+
+
+
+
+Duplicate Task Handling:
+Check queues for existing in-progress tasks with the same user_id and link before adding to the queue.
+Ignore duplicates with a reply: "This request is already being processed."
+
+
+
+6. Error Handling and Resilience
+
+Chrome Failures:
+Catch WebDriverException (e.g., browser crash or timeout).
+Retry once after 5 seconds; if failed, DM admin: "⚠️ Chrome crashed on . Please check the browser."
+
+
+Google Drive API:
+Use two API clients (primary_drive and secondary_drive) with separate credentials.
+On authentication failure:
+Retry once, then switch to the secondary API and DM admin: "Google Drive API shifted."
+If both fail, pause processing and DM admin: "Both Google Drive APIs failed. Use /api-start-working to resume."
+Resume on /api-start-working by re-authenticating and continuing from the last task.
+
+
+Check storage before upload:
+Query: drive_service.about().get(fields='storageQuota').execute().
+If < 1GB free, switch API and DM admin: "Google Drive API shifted due to storage."
+If second API is half full, DM admin: "Second Google Drive storage is 50% used."
+If both full, pause and DM admin: "Both Google Drive storages full. Use /api-start-working after freeing space."
+
+
+
+
+Network Issues:
+Implement a lightweight network watcher using subprocess.run(['ping', '-n', '5', '1.1.1.1']) to detect connectivity.
+On failure, pause the current task, retry every 30 seconds, and DM admin: "No network detected. Waiting for recovery."
+Resume automatically when connectivity is restored, continuing from the last task.
+
+
+Download/Upload Failures:
+Retry failed downloads/uploads twice with a 5-second delay.
+On final failure, reply to the user: "Error processing request. Contact admin."
+DM admin with details: "Failed task:  for user  in group . Error: ."
+
+
+File Integrity:
+Check for .part or .crdownload files to detect incomplete downloads.
+Compute MD5 checksum after download; retry once if corrupt.
+If a Google Drive upload is interrupted, check for the file ID; re-upload if missing.
+
+
+
+7. Resource and File Management
+
+File Cleanup:
+Schedule a job every hour to query Google Drive: files.list(q='createdTime < <12_hours_ago>').
+Delete files older than 12 hours using files.delete(fileId=<id>).
+Keep local files in C:\BotDownloads for manual deletion.
+
+
+Duplicate Files:
+On upload, check for existing files: files.list(q='name = <filename>').
+Auto-rename duplicates (e.g., file.png → file_2.png) and DM admin: "Renamed file to  due to duplicate."
+
+
+PC Sleep Prevention:
+Use a Windows API call (e.g., SetThreadExecutionState(ES_CONTINUOUS | ES_SYSTEM_REQUIRED)) to prevent system sleep during bot operation, allowing screen sleep.
+
+
+
+8. Admin Features
+
+DM Restrictions:
+Ignore normal user DMs with a reply: "Please use the bot in a group: ."
+Allow admin DM commands using admins table verification.
+
+
+Commands:
+/block-website <site> (admin-only, group-specific):
+Add to blocked_websites (group_id INTEGER, site TEXT, PRIMARY KEY (group_id, site)).
+Delete messages containing blocked sites: "This website is not available. Contact admin."
+
+
+/unblock-website <site>: Remove from blocked_websites.
+/bot-All-commandlist (admin-only, DM):
+Reply with a formatted list of all commands and their descriptions (e.g., "/bot-start: Starts the bot in the group").
+
+
+/bot-error-fixed:
+Triggered after 5 consecutive task failures; pause all groups and DM admin: "Bot paused due to 5 errors. Use /bot-error-fixed to resume."
+Resume on command, clearing error counter and reopening groups.
+
+
+
+
+Error Notifications:
+Send critical errors (e.g., Chrome crash, API failures) to admin DM with full details (task ID, link, error message).
+In groups, send only: "Error found. Contact admin."
+
+
+
+9. Technical Specifications
+
+Language: Python 3.9+ for compatibility with libraries and Docker.
+Libraries:
+python-telegram-bot==13.7 for Telegram API interactions.
+selenium==4.8.0 for browser automation.
+google-api-python-client==2.79.0 for Google Drive integration.
+aiohttp for asynchronous HTTP requests (e.g., ShrinkMe.io API).
+sqlite3 for lightweight database management.
+schedule for periodic tasks (e.g., file cleanup).
+
+
+Database:
+SQLite file: bot.db.
+Tables: groups, admins, subscriptions, user_requests, queues, blocked_websites.
+
+
+Docker Configuration:
+Base image: python:3.9-slim.
+Install Chrome and ChromeDriver: apt-get install -y google-chrome-stable.
+Copy config.json, credentials.json, and bot scripts.
+Expose environment variables: TELEGRAM_TOKEN, GOOGLE_CREDENTIALS, SHRINKME_API_KEY.
+
+
+Deployment Scripts:
+setup.sh: Install dependencies, configure Chrome profile, and initialize the database.
+start.sh: Run the Docker container with docker run --rm -v /path/to/downloads:/BotDownloads bot_image.
+
+
+
+10. Resilience and Backup
+
+Auto-Restart:
+Use a Windows service or systemd-like mechanism (e.g., NSSM) to monitor and restart the bot on crashes.
+On startup, query queues for in-progress tasks and re-queue them with pending status.
+
+
+Backup System:
+Every 8 hours, back up bot.db and config.json to C:\BotBackups\<timestamp>.bak.
+Delete backups older than 48 hours using a scheduled job.
+On restart, restore from the latest backup if bot.db is corrupted.
+
+
+Resume Logic:
+For downloading tasks: Check if the file exists in C:\BotDownloads; re-download if incomplete.
+For uploading tasks: Verify file presence in Google Drive; re-upload if missing.
+
+
+
+11. Additional Features
+
+Command Uniqueness:
+Prefix all commands with /bot- (e.g., /bot-start, /bot-stop) to avoid conflicts with other bots.
+
+
+Queue Monitoring:
+/bot-resume-task (admin-only, DM): Manually scan and retry interrupted tasks.
+
+
+Resource Optimization:
+Limit API calls to Telegram (e.g., 30 per second per chat) by batching updates.
+Use connection pooling for Google Drive and ShrinkMe.io APIs.
+
+
+
+
+Edge Cases and Considerations
+
+Rate Limits: Handle Telegram API rate limits by implementing exponential backoff (e.g., retry after 1s, 2s, 4s).
+Large Files: For File and 1Subscription plans, chunk large uploads to Google Drive using resumable uploads.
+Concurrent Users: Use asyncio.Lock to prevent race conditions in queue processing.
+Database Integrity: Use transactions (BEGIN, COMMIT) for all database operations to prevent partial writes.
+Logging: Log all actions (message received, task status, errors) to bot.log with structured format (e.g., JSON or [<timestamp>] <level> <message>).
+
+
+This prompt provides a comprehensive blueprint for the Telegram bot, covering every requirement with precise implementation details, database schemas, error handling strategies, and deployment considerations. It ensures the AI has all necessary information to develop a production-ready bot.
+
+
+
+Another file structure 
+
+│
+├── README.md                          # Quick-start & architecture recap
+├── LICENSE                            # MIT / Proprietary
+├── .gitignore                         # Ignore secrets, downloads, logs
+├── requirements.txt                   # Exact pinned packages
+├── runtime.txt                        # Python 3.11.x
+│
+├── docker-compose.yml                 # Optional container stack
+├── Dockerfile                         # Multi-stage, Chrome baked in
+├── scripts/                           # One-command helpers
+│   ├── start_bot.bat                  # Windows auto-restart loop
+│   ├── start_bot.sh                   # Linux / WSL
+│   ├── setup.py                       # First-time config generator
+│   └── backup_and_cleanup.py          # Cron-able 8 h backup + 48 h purge
+│
+├── config/                            # ** NEVER committed to Git **
+│   ├── config.example.json            # Template only
+│   ├── config.json                    # LIVE – tokens, channels, admins
+│   ├── domains.json                   # 8-site → rewrite map
+│   ├── chrome_profile/                # Persistent Chrome user-data-dir
+│   │   └── Default/                   # Pre-logged cookies & extensions
+│   ├── credentials/                   # Google Drive service-account JSONs
+│   │   ├── gdrive1.json
+│   │   └── gdrive2.json
+│   └── admins.json                    # List of admin Telegram IDs
+│
+├── src/                               # Core application code
+│   ├── init.py
+│   ├── main.py                        # Entry point (asyncio + PTB)
+│   ├── bot/                           # Telegram layer
+│   │   ├── init.py
+│   │   ├── dispatcher.py              # Handlers & filters
+│   │   ├── auth.py                    # Channel check + group allow-list
+│   │   ├── commands/                  # Every command in its own file
+│   │   │   ├── start_stop.py
+│   │   │   ├── subscription.py
+│   │   │   ├── group_management.py
+│   │   │   ├── queue_management.py
+│   │   │   └── admin_dm.py
+│   │   └── utils.py                   # General helpers (escape, log, etc.)
+│   ├── worker/                        # File-processing sub-process
+│   │   ├── init.py
+│   │   ├── chrome_manager.py          # Selenium factory (3–4 tab limit)
+│   │   ├── downloader.py              # Download + retry + checksum
+│   │   ├── uploader.py                # Google Drive API 1/2 + storage check
+│   │   ├── shrinker.py                # ShrinkMe.io wrapper
+│   │   └── queue_consumer.py          # SQLite queue reader (priority first)
+│   ├── persistence/                   # All DB models & migrations
+│   │   ├── init.py
+│   │   ├── schema.sql                 # CREATE TABLE statements
+│   │   ├── db.py                      # Connection pool & migrations
+│   │   └── models.py                  # ORM-like dataclasses
+│   ├── services/                      # Cross-cutting services
+│   │   ├── init.py
+│   │   ├── logger.py                  # Structured JSON logs → logs/
+│   │   ├── notifier.py                # Admin DM sender
+│   │   ├── file_cleanup.py            # 12 h GDrive & local purge
+│   │   └── network_watcher.py         # 1.1.1.1 ping loop
+│   └── constants.py                   # Magic strings & numbers centralised
+│
+├── data/                              # Runtime state
+│   ├── bot.db                         # SQLite (groups, tasks, users)
+│   └── backups/                       # Timestamped .db & .json copies
+│
+├── downloads/                         # Temporary downloads
+│   └── .gitkeep                       # Ensure folder exists
+│
+├── logs/                              # Rotating logs
+│   ├── bot.log                        # Current
+│   └── bot.log.YYYY-MM-DD             # Daily archives
+│
+└── tests/                             # PyTest suite
+├── init.py
+├── conftest.py                    # Fixtures (DB, mock bot, fake GDrive)
+├── test_auth.py
+├── test_worker.py
+└── integration/                   # End-to-end happy paths
+
+
+
+
+
+
+
+All commands 
+
+Group Commands (12):
+/bot-start - Activate bot in group
+
+/stop-bot - Deactivate bot in group
+
+/activate - Resume processing in group
+
+/unactivate - Pause processing in group
+
+/defaultsubscription - Set default subscription
+
+/12hsubscription - Set 12-hour subscription
+
+/freesubscription - Set free subscription
+
+/filesubscription - Set file subscription
+
+/1subscription - Set 1subscription
+
+/block-website - Block domain in group
+
+/unblock-website - Unblock domain in group
+
+/reset-queue - Reset task queue in group
+
+Admin DM Commands (8):
+/groupapprovae - Approve new group
+
+/allapprovaedgroup - List approved groups
+
+/deletethisapprovaedgroup - Delete approved group
+
+/manage-this-group-queue - Manage group queue
+
+/api-start-working - Resume GDrive operations
+
+/bot-error-fixed - Resume after critical errors
+
+/bot-All-commandlist - Show all commands
+
+/bot_resume_task - Resume interrupted tasks
+
