@@ -79,7 +79,7 @@ async def stop_bot(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
         await update.message.reply_text(f"An error occurred while stopping the bot: {e}")
 
 
-async def unactivate(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+async def unactivate_bot(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Handles the /unactivate command to pause the bot in a group."""
     user = update.effective_user
     chat_id = update.effective_chat.id
@@ -111,7 +111,7 @@ async def unactivate(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None
         await update.message.reply_text(f"An error occurred while pausing the bot: {e}")
 
 
-async def activate(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+async def activate_bot(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Handles the /activate command to resume the bot in a group."""
     user = update.effective_user
     chat_id = update.effective_chat.id
@@ -148,7 +148,7 @@ def setup_start_stop_handlers(dispatcher):
     # Handlers for commands used in Groups
     dispatcher.add_handler(CommandHandler("bot-start", bot_start, filters=filters.ChatType.GROUPS))
     dispatcher.add_handler(CommandHandler("stop-bot", stop_bot, filters=filters.ChatType.GROUPS))
-    dispatcher.add_handler(CommandHandler("unactivate", unactivate, filters=filters.ChatType.GROUPS))
-    dispatcher.add_handler(CommandHandler("activate", activate, filters=filters.ChatType.GROUPS))
+    dispatcher.add_handler(CommandHandler("unactivate", unactivate_bot, filters=filters.ChatType.GROUPS))
+    dispatcher.add_handler(CommandHandler("activate", activate_bot, filters=filters.ChatType.GROUPS))
 
     logger.info("Registered start/stop/activate/unactivate handlers.")
